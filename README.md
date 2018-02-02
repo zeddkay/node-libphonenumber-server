@@ -24,3 +24,4 @@ For testing purposes on the terminal, type
 or
 ``` mocha test ```
 
+Please feel free to fix any issues or make recommendations. Thank you.
