@@ -32,7 +32,7 @@ app.post('/api/phonenumbers/parse/file', upload.single('upload'), function(req, 
         var fs = require('fs');
         var fileContents = fs.readFileSync(req.file.path);
         var buf = Buffer.from(fileContents, 'base64').toString(); 
-        var str = buf.split('\n') + " ";
+        var str = buf.split("\n") + "";
         var arr = str.split(/[;,]/);
         res.status(200).json(parseNum(arr));
     } else {
@@ -48,13 +48,16 @@ function parseNum(num) {
     var number;
     for (var i = 0; i < num.length; i++) {
         try {
-            number = phoneUtil.parse(num[i], 'CA');
+            var temp = num[i].replace(/\D/g, '');   //parse any non-numeric characters
+            number = phoneUtil.parseAndKeepRawInput(temp, 'CA');
+            
             if (phoneUtil.isValidNumber(number)) {
+                
                 result.push(phoneUtil.format(number, PNF.NATIONAL));
+               
             }
         }
         catch(err) {
-        //console.log("Exception for string: " + num[i] + " : " + err);
         }
     }
     return Array.from(new Set(result));
